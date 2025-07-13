@@ -73,27 +73,30 @@ def save_viaipe(conn, cliente, disponibilidade, qualidade, consumo_mbps):
         conn.commit()
     print(f"[VIAIPE] {cliente} - Disp: {disponibilidade:.2f}%, Qualidade: {qualidade}, Consumo: {consumo_mbps:.2f} Mbps")
 
+# def ping_host(host):
+#     result = subprocess.run(
+#         ["ping", "-c", "4", host],
+#         capture_output=True, text=True
+#     )
+
+#     output = result.stdout
+#     loss_line = [line for line in output.splitlines() if "packet loss" in line]
+#     stats_line = [line for line in output.splitlines() if "rtt min" in line]
+
+#     if not loss_line or not stats_line:
+#         print(f"[PING] Falha ao obter estatísticas de {host}")
+#         return None, None
+
+#     try:
+#         packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
+#         rtt_avg = float(stats_line[0].split("/")[4])
+#         return rtt_avg, packet_loss
+#     except Exception as e:
+#         print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
+#         return None, None
+
 def ping_host(host):
-    result = subprocess.run(
-        ["ping", "-c", "4", host],
-        capture_output=True, text=True
-    )
-
-    output = result.stdout
-    loss_line = [line for line in output.splitlines() if "packet loss" in line]
-    stats_line = [line for line in output.splitlines() if "rtt min" in line]
-
-    if not loss_line or not stats_line:
-        print(f"[PING] Falha ao obter estatísticas de {host}")
-        return None, None
-
-    try:
-        packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
-        rtt_avg = float(stats_line[0].split("/")[4])
-        return rtt_avg, packet_loss
-    except Exception as e:
-        print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
-        return None, None
+    return 10.0, 0.0  # Simulação de resposta para testes
 
 def check_http(url):
     start = time.time()
@@ -193,5 +196,12 @@ def main():
         print("Coleta finalizada. Aguardando 60s...\n")
         time.sleep(60)
 
+# if __name__ == "__main__":
+#     main()
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"[FATAL ERROR] {e}")
+        time.sleep(20)
