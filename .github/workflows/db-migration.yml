@@ -7,8 +7,8 @@ on:
 
 jobs:
   migrate:
+    name: Cronicas Monitor
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout do código
       uses: actions/checkout@v4
@@ -16,7 +16,15 @@ jobs:
     - name: Instalar cliente PostgreSQL
       run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
+    - name: Testar conexão psql
+      continue-on-error: true
+      env:
+        PGPASSWORD: ${{ secrets.DB_PASS }}
+      run: |
+        psql "host=${{ secrets.DB_HOST }} port=${{ secrets.DB_PORT }} user=${{ secrets.DB_USER }} dbname=${{ secrets.DB_NAME }} password=${{ secrets.DB_PASS }} sslmode=require" -c '\conninfo'
+
     - name: Aplicar init.sql no banco Supabase # Adicionar secrets do Supabase
+      continue-on-error: true
       env:
         PGPASSWORD: ${{ secrets.DB_PASS }}
       run: |
@@ -25,3 +33,10 @@ jobs:
              -U ${{ secrets.DB_USER }} \
              -d ${{ secrets.DB_NAME }} \
              -f db/init.sql
+
+    - name: Aplicar init.sql no banco Supabase 2
+      continue-on-error: true
+      env:
+        PGPASSWORD: ${{ secrets.DB_PASS }}
+      run: |
+        psql "host=${{ secrets.DB_HOST }} port=${{ secrets.DB_PORT }} user=${{ secrets.DB_USER }} dbname=${{ secrets.DB_NAME }} password=${{ secrets.DB_PASS }} sslmode=require" -f db/init.sql
