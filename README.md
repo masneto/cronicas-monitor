@@ -13,6 +13,7 @@ Projeto DevOps para monitorar latência, disponibilidade e resposta HTTP de site
 - [Monitoramento e Visualização](#monitoramento-e-visualização)
 - [Deploy em Nuvem](#deploy-em-nuvem)
 - [Automação de Migração (Supabase)](#automação-de-migração-supabase)
+- [High Level Design (HLD)](#high-level-design-hld)
 - [Licença](#licença)
 
 ---
