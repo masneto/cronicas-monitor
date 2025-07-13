@@ -105,7 +105,7 @@ POSTGRES_PASSWORD=
 - O workflow db-migration.yml automatiza a aplicação do script SQL no Supabase a cada alteração em init.sql.
 
 ## Automação de Migração (Supabase)
-- O workflow GitHub Actions detecta mudanças em init.sql e executa a migração no banco Supabase usando as variáveis de ambiente do repositório (DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME). Que deverão ser criados nas Secrets do repositório.
+- O workflow GitHub Actions detecta mudanças em init.sql e executa a migração no banco Supabase usando as variáveis de ambiente do repositório (DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME). Que deverão ser criados nas `Secrets` do repositório.
 
 ## High Level Design (HLD)
 
