@@ -1,4 +1,4 @@
 app = "cronicas-monitor"
 
 [processes]
-  worker = "python /app/main.py"
+  app = "python /app/main.py"
