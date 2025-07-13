@@ -66,7 +66,7 @@ cronicas-monitor/
 
 1. **Configure as variáveis de ambiente**
 
-   Edite o arquivo `.env` e o `docker-compose` e defina:
+   Edite o arquivo `.env` e defina:
    - `POSTGRES_PASSWORD` (senha do banco para o container)
    - `DB_PASS` (senha do banco para o agent)
 

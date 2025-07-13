@@ -143,8 +143,12 @@ def main():
 
             for url in SITES:
                 latency, status = check_http(url)
-                if latency is not None:
-                    save_http(conn, url, latency, status)
+                if status is None:
+                    save_http(conn, url, None, 0)
+                else:
+                    save_http(conn, url, latency, status)                
+                # if latency is not None:
+                #     save_http(conn, url, latency, status)
                 print(url, latency, status)
 
             clientes = fetch_viaipe(VIAIPE_REGION)
