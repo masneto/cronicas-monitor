@@ -49,53 +49,27 @@ def save_viaipe(conn, cliente, disponibilidade, qualidade, consumo_mbps):
         conn.commit()
     print(f"[VIAIPE] {cliente} - Disp: {disponibilidade:.2f}%, Qualidade: {qualidade}, Consumo: {consumo_mbps:.2f} Mbps")
 
-# def ping_host(host):
-#     result = subprocess.run(
-#         ["ping", "-c", "4", host],
-#         capture_output=True, text=True
-#     )
-
-#     output = result.stdout
-#     loss_line = [line for line in output.splitlines() if "packet loss" in line]
-#     stats_line = [line for line in output.splitlines() if "rtt min" in line]
-
-#     if not loss_line or not stats_line:
-#         print(f"[PING] Falha ao obter estatísticas de {host}")
-#         return None, None
-
-#     try:
-#         packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
-#         rtt_avg = float(stats_line[0].split("/")[4])
-#         return rtt_avg, packet_loss
-#     except Exception as e:
-#         print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
-#         return None, None
-
 def ping_host(host):
-    total_pings = 4
-    success_times = []
+    result = subprocess.run(
+        ["ping", "-c", "4", host],
+        capture_output=True, text=True
+    )
 
-    for i in range(total_pings):
-        try:
-            start = time.time()
-            # tenta conexão simulada (porta 443)
-            r = requests.get(f"https://{host}", timeout=3)
-            if r.status_code:
-                elapsed = (time.time() - start) * 1000  # em ms
-                success_times.append(elapsed)
-        except Exception as e:
-            print(f"[PING] Falha tentativa {i+1} para {host}: {e}")
-        time.sleep(0.5) 
+    output = result.stdout
+    loss_line = [line for line in output.splitlines() if "packet loss" in line]
+    stats_line = [line for line in output.splitlines() if "rtt min" in line]
 
-    if not success_times:
-        print(f"[PING] Nenhuma resposta recebida de {host}")
-        return None, 100.0
+    if not loss_line or not stats_line:
+        print(f"[PING] Falha ao obter estatísticas de {host}")
+        return None, None
 
-    rtt_avg = sum(success_times) / len(success_times)
-    packet_loss = 100.0 * (total_pings - len(success_times)) / total_pings
-
-    return rtt_avg, packet_loss
-
+    try:
+        packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
+        rtt_avg = float(stats_line[0].split("/")[4])
+        return rtt_avg, packet_loss
+    except Exception as e:
+        print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
+        return None, None
 
 def check_http(url):
     start = time.time()
