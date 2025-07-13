@@ -1,0 +1,27 @@
+name: DB Migration on Supabase
+
+on:
+  push:
+    paths:
+      - 'db/init.sql'
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Instalar cliente PostgreSQL
+      run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+    - name: Aplicar init.sql no banco Supabase # Adicionar secrets do Supabase
+      env:
+        PGPASSWORD: ${{ secrets.DB_PASS }}
+      run: |
+        psql -h ${{ secrets.DB_HOST }} \
+             -p ${{ secrets.DB_PORT }} \
+             -U ${{ secrets.DB_USER }} \
+             -d ${{ secrets.DB_NAME }} \
+             -f db/init.sql
