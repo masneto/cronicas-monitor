@@ -1,7 +1,4 @@
 app = "cronicas-monitor"
 
-[build]
-  builder = "heroku/buildpacks:20"
-
 [processes]
   worker = "python /app/main.py"
