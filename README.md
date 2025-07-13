@@ -104,8 +104,9 @@ POSTGRES_PASSWORD=
 - Para rodar em nuvem (ex: Supabase), use o arquivo `docker-compose.cloud.yml` e configure as variáveis de ambiente dentro do Github para apontar para o banco remoto.
 - O workflow db-migration.yml automatiza a aplicação do script SQL no Supabase a cada alteração em init.sql.
 
-## Automação de Migração (Supabase)
+## Automação de Migração (Supabase + Grafana Cloud)
 - O workflow GitHub Actions detecta mudanças em init.sql e executa a migração no banco Supabase usando as variáveis de ambiente do repositório (DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME). Que deverão ser criados nas `Secrets` do repositório.
+- Os dashboards também serão possíveis encontrar na plataforma [Grafana Cloud](https://cronicasnv.grafana.net/).
 
 ## High Level Design (HLD)
 
