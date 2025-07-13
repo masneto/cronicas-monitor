@@ -10,9 +10,6 @@ SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https:/
 PING_HOSTS = ['google.com', 'youtube.com', 'rnp.br', 'cronicas-app.pages.dev']
 VIAIPE_REGION = "norte"
 
-# SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
-# PING_HOSTS = ["8.8.8.8", "1.1.1.1"]
-
 def db_connect():
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
@@ -28,7 +25,7 @@ def save_ping(conn, host, rtt_avg, packet_loss):
             "INSERT INTO ping (host, rtt_avg, packet_loss) VALUES (%s, %s, %s)",
             (host, rtt_avg, packet_loss)
         )
-        conn.commit()
+    conn.commit()
     print(f"[PING] {host} - RTT médio: {rtt_avg:.2f}ms, Perda: {packet_loss:.1f}%")
 
 def save_http(conn, host, latency, status_code):
@@ -37,8 +34,8 @@ def save_http(conn, host, latency, status_code):
             "INSERT INTO http_check (host, latency_ms, status_code) VALUES (%s, %s, %s)",
             (host, latency, status_code)
         )
-        conn.commit()
-    print(f"[HTTP] {host} - Latência: {latency:.2f}ms, Status: {status_code}")
+    conn.commit()
+    print(f"[HTTP] {host} - Latência: {latency if latency is not None else 'N/A'}ms, Status: {status_code}")
 
 def save_viaipe(conn, cliente, disponibilidade, qualidade, consumo_mbps):
     with conn.cursor() as cur:
@@ -46,7 +43,7 @@ def save_viaipe(conn, cliente, disponibilidade, qualidade, consumo_mbps):
             "INSERT INTO viaipe (cliente, disponibilidade, qualidade, consumo_mbps) VALUES (%s, %s, %s, %s)",
             (cliente, disponibilidade, qualidade, consumo_mbps)
         )
-        conn.commit()
+    conn.commit()
     print(f"[VIAIPE] {cliente} - Disp: {disponibilidade:.2f}%, Qualidade: {qualidade}, Consumo: {consumo_mbps:.2f} Mbps")
 
 def ping_host(host):
@@ -130,48 +127,49 @@ def fetch_viaipe(region="norte"):
         return []
 
 def main():
-    while True:
-        print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Iniciando coleta de métricas...")
+    try:
+        while True:
+            print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Iniciando coleta de métricas...")
 
-        try:
-            conn = db_connect()
-            print("✅ Conexão com DB iniciada")
+            try:
+                conn = db_connect()
+                print("✅ Conexão com DB iniciada")
 
-            for host in PING_HOSTS:
-                rtt, loss = ping_host(host)
-                if rtt is not None:
-                    save_ping(conn, host, rtt, loss)
+                for host in PING_HOSTS:
+                    rtt, loss = ping_host(host)
+                    if rtt is not None:
+                        save_ping(conn, host, rtt, loss)
 
-            for url in SITES:
-                latency, status = check_http(url)
-                if status is None:
-                    save_http(conn, url, None, 0)
-                else:
-                    save_http(conn, url, latency, status)                
-                # if latency is not None:
-                #     save_http(conn, url, latency, status)
-                print(url, latency, status)
+                for url in SITES:
+                    latency, status = check_http(url)
+                    if status is None:
+                        save_http(conn, url, None, 0)
+                    else:
+                        save_http(conn, url, latency, status)
+                    print(url, latency, status)
 
-            clientes = fetch_viaipe(VIAIPE_REGION)
-            for cliente in clientes:
-                save_viaipe(
-                    conn,
-                    cliente["cliente"],
-                    cliente["disponibilidade"],
-                    cliente["qualidade"],
-                    cliente["consumo_mbps"]
-                )
+                clientes = fetch_viaipe(VIAIPE_REGION)
+                for cliente in clientes:
+                    save_viaipe(
+                        conn,
+                        cliente["cliente"],
+                        cliente["disponibilidade"],
+                        cliente["qualidade"],
+                        cliente["consumo_mbps"]
+                    )
 
-            conn.close()
-        except Exception as e:
-            print(f"[ERRO] {e}")
+            except Exception as e:
+                print(f"[ERRO] {e}")
+            finally:
+                if 'conn' in locals() and conn:
+                    conn.close()
+                    print("🔒 Conexão com DB encerrada")
 
-        print("Coleta finalizada. Aguardando 60s...\n")
-        time.sleep(60)
+            print("Coleta finalizada. Aguardando 60s...\n")
+            time.sleep(60)
+
+    except KeyboardInterrupt:
+        print("\n⏹️ Interrupção manual recebida. Encerrando o programa...")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"[FATAL ERROR] {e}")
-        time.sleep(20)
+    main()
