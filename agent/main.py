@@ -5,9 +5,6 @@ import psycopg2
 import subprocess
 from datetime import datetime
 
-print("🚀 Entrando no container")
-print("🧪 DB_HOST:", os.getenv("DB_HOST"))
-
 os.environ['REQUESTS_CA_BUNDLE'] = '/etc/ssl/certs/ca-certificates.crt'
 SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
 PING_HOSTS = ['google.com', 'youtube.com', 'rnp.br', 'cronicas-app.pages.dev']
@@ -16,28 +13,7 @@ VIAIPE_REGION = "norte"
 # SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
 # PING_HOSTS = ["8.8.8.8", "1.1.1.1"]
 
-# def db_connect():
-#     return psycopg2.connect(
-#         host=os.getenv("DB_HOST"),
-#         port=os.getenv("DB_PORT"),
-#         dbname=os.getenv("DB_NAME"),
-#         user=os.getenv("DB_USER"),
-#         password=os.getenv("DB_PASSWORD")
-#     )
-
 def db_connect():
-    env_vars = ["DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD"]
-    missing = [var for var in env_vars if not os.getenv(var)]
-
-    if missing:
-        raise Exception(f"❌ Variáveis de ambiente ausentes: {', '.join(missing)}")
-
-    print("🔌 Tentando conectar ao banco com as seguintes variáveis:")
-    print(f"  - DB_HOST: {os.getenv('DB_HOST')}")
-    print(f"  - DB_NAME: {os.getenv('DB_NAME')}")
-    print(f"  - DB_USER: {os.getenv('DB_USER')}")
-    print(f"  - DB_PORT: {os.getenv('DB_PORT')}")
-
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT"),
@@ -73,30 +49,27 @@ def save_viaipe(conn, cliente, disponibilidade, qualidade, consumo_mbps):
         conn.commit()
     print(f"[VIAIPE] {cliente} - Disp: {disponibilidade:.2f}%, Qualidade: {qualidade}, Consumo: {consumo_mbps:.2f} Mbps")
 
-# def ping_host(host):
-#     result = subprocess.run(
-#         ["ping", "-c", "4", host],
-#         capture_output=True, text=True
-#     )
-
-#     output = result.stdout
-#     loss_line = [line for line in output.splitlines() if "packet loss" in line]
-#     stats_line = [line for line in output.splitlines() if "rtt min" in line]
-
-#     if not loss_line or not stats_line:
-#         print(f"[PING] Falha ao obter estatísticas de {host}")
-#         return None, None
-
-#     try:
-#         packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
-#         rtt_avg = float(stats_line[0].split("/")[4])
-#         return rtt_avg, packet_loss
-#     except Exception as e:
-#         print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
-#         return None, None
-
 def ping_host(host):
-    return 10.0, 0.0  # Simulação de resposta para testes
+    result = subprocess.run(
+        ["ping", "-c", "4", host],
+        capture_output=True, text=True
+    )
+
+    output = result.stdout
+    loss_line = [line for line in output.splitlines() if "packet loss" in line]
+    stats_line = [line for line in output.splitlines() if "rtt min" in line]
+
+    if not loss_line or not stats_line:
+        print(f"[PING] Falha ao obter estatísticas de {host}")
+        return None, None
+
+    try:
+        packet_loss = float(loss_line[0].split(",")[2].strip().split("%")[0])
+        rtt_avg = float(stats_line[0].split("/")[4])
+        return rtt_avg, packet_loss
+    except Exception as e:
+        print(f"[PING] Erro ao interpretar resposta do ping para {host}: {e}")
+        return None, None
 
 def check_http(url):
     start = time.time()
@@ -195,9 +168,6 @@ def main():
 
         print("Coleta finalizada. Aguardando 60s...\n")
         time.sleep(60)
-
-# if __name__ == "__main__":
-#     main()
 
 if __name__ == "__main__":
     try:
