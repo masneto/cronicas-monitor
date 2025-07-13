@@ -1,4 +1,4 @@
-name: DB Migration on Supabase
+name: Cronicas Monitor on Supabase
 
 on:
   push:
