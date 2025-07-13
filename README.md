@@ -66,9 +66,19 @@ cronicas-monitor/
 
 1. **Configure as variáveis de ambiente**
 
+> O arquivo `.env` deverá ser criado na raiz do projeto, abaixo está o conteúdo a ser copiado para o arquivo criado.
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=cronicas_monitor
+DB_USER=postgres
+DB_PASSWORD=
+POSTGRES_PASSWORD=
+```
+
    Edite o arquivo `.env` e defina:
-   - `POSTGRES_PASSWORD` (senha do banco para o container)
-   - `DB_PASS` (senha do banco para o agent)
+    - `POSTGRES_PASSWORD` (senha do banco para o container)
+    - `DB_PASS` (senha do banco para o agent)
 
 2. **Suba os serviços com Docker Compose**
 
