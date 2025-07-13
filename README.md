@@ -48,10 +48,9 @@ Searched cronicas-monitor for "Preciso que crie uma documentaçção em Markdown
 ```
 cronicas-monitor/ 
 ├── .env # Variáveis de ambiente 
-├── docker-compose.yml # Deploy local (Postgres, Grafana, Agent) 
-├── docker-compose.cloud.yml # Deploy para nuvem (Supabase) 
+├── docker-compose.yml # Deploy local (Postgres, Grafana, Agent)
+├── Dockerfile 
 ├── agent/ 
-│ ├── Dockerfile 
 │ ├── main.py # Código principal do agente de coleta 
 │ └── requirements.txt 
 ├── db/ 
