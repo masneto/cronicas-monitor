@@ -1,3 +1,6 @@
+print("🚀 Entrando no container")
+print("🧪 DB_HOST:", os.getenv("DB_HOST"))
+
 import os
 import time
 import requests
@@ -21,6 +24,7 @@ VIAIPE_REGION = "norte"
 #         user=os.getenv("DB_USER"),
 #         password=os.getenv("DB_PASSWORD")
 #     )
+
 def db_connect():
     env_vars = ["DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD"]
     missing = [var for var in env_vars if not os.getenv(var)]
@@ -155,6 +159,7 @@ def main():
 
         try:
             conn = db_connect()
+            print("✅ Conexão com DB iniciada")
 
             for host in PING_HOSTS:
                 rtt, loss = ping_host(host)
