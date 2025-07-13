@@ -96,5 +96,32 @@ cronicas-monitor/
 ## Automação de Migração (Supabase)
 - O workflow GitHub Actions detecta mudanças em init.sql e executa a migração no banco Supabase usando as variáveis de ambiente do repositório (DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME).'
 
- ## Licença
+## High Level Design (HLD)
+
+```mermaid
+flowchart TD
+    subgraph Agent Container
+        A1[main.py]
+    end
+
+    subgraph Banco de Dados
+        B1[(PostgreSQL)]
+    end
+
+    subgraph Visualização
+        C1[Grafana]
+    end
+
+    subgraph Internet
+        D1[Hosts e Sites Monitorados]
+        D2[API Viaipe]
+    end
+
+    D1 -- Ping/HTTP --> A1
+    D2 -- API JSON --> A1
+    A1 -- Métricas (ping, http, viaipe) --> B1
+    C1 -- Consulta dados --> B1
+```
+
+## Licença
 MIT
