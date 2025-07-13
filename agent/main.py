@@ -1,12 +1,12 @@
-print("🚀 Entrando no container")
-print("🧪 DB_HOST:", os.getenv("DB_HOST"))
-
 import os
 import time
 import requests
 import psycopg2
 import subprocess
 from datetime import datetime
+
+print("🚀 Entrando no container")
+print("🧪 DB_HOST:", os.getenv("DB_HOST"))
 
 os.environ['REQUESTS_CA_BUNDLE'] = '/etc/ssl/certs/ca-certificates.crt'
 SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
