@@ -13,7 +13,27 @@ VIAIPE_REGION = "norte"
 # SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
 # PING_HOSTS = ["8.8.8.8", "1.1.1.1"]
 
+# def db_connect():
+#     return psycopg2.connect(
+#         host=os.getenv("DB_HOST"),
+#         port=os.getenv("DB_PORT"),
+#         dbname=os.getenv("DB_NAME"),
+#         user=os.getenv("DB_USER"),
+#         password=os.getenv("DB_PASSWORD")
+#     )
 def db_connect():
+    env_vars = ["DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD"]
+    missing = [var for var in env_vars if not os.getenv(var)]
+
+    if missing:
+        raise Exception(f"❌ Variáveis de ambiente ausentes: {', '.join(missing)}")
+
+    print("🔌 Tentando conectar ao banco com as seguintes variáveis:")
+    print(f"  - DB_HOST: {os.getenv('DB_HOST')}")
+    print(f"  - DB_NAME: {os.getenv('DB_NAME')}")
+    print(f"  - DB_USER: {os.getenv('DB_USER')}")
+    print(f"  - DB_PORT: {os.getenv('DB_PORT')}")
+
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT"),
