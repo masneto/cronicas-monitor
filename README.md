@@ -43,9 +43,6 @@ O **cronicas-monitor** é uma solução DevOps para monitoramento de infraestrut
 
 ## Estrutura do Projeto
 
-
-Searched cronicas-monitor for "Preciso que crie uma documentaçção em Markdown para a aplicação.", 10 results
-
 ```
 cronicas-monitor/ 
 ├── .env # Variáveis de ambiente 
