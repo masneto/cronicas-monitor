@@ -3,9 +3,22 @@ import time
 import requests
 import psycopg2
 import subprocess
+import signal
+import sys
 from datetime import datetime
 
+# 👉 Tentativa de manter o app vivo quando Fly.io tenta encerrar com SIGTERM
+def handle_exit(signum, frame):
+    print(f"⚠️ Sinal {signum} recebido. Impedindo encerramento.")
+    while True:
+        time.sleep(60) 
+
+signal.signal(signal.SIGTERM, handle_exit)
+signal.signal(signal.SIGINT, handle_exit)
+
+# Certificado para requisições HTTPS
 os.environ['REQUESTS_CA_BUNDLE'] = '/etc/ssl/certs/ca-certificates.crt'
+
 SITES = ["https://google.com", "https://youtube.com", "https://rnp.br", "https://cronicas-app.pages.dev"]
 PING_HOSTS = ['google.com', 'youtube.com', 'rnp.br', 'cronicas-app.pages.dev']
 VIAIPE_REGION = "norte"

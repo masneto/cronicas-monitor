@@ -1,4 +1,15 @@
 app = "cronicas-monitor"
 
+primary_region = "iad"
+
+[env]
+  REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt"
+
 [processes]
-  app = "python /app/main.py"
+  app = "python main.py"
+
+[deploy]
+  release_command = "echo skipping"
+
+[experimental]
+  auto_rollback = true
