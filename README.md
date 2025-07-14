@@ -14,6 +14,7 @@ Projeto DevOps para monitorar latência, disponibilidade e resposta HTTP de site
 - [Deploy em Nuvem](#deploy-em-nuvem)
 - [Automação de Migração (Supabase)](#automação-de-migração-supabase)
 - [High Level Design (HLD)](#high-level-design-hld)
+- [Repositorios](#repositorios)
 - [Licença](#licença)
 
 ---
@@ -51,6 +52,7 @@ cronicas-monitor/
 ├── docker-compose.yml # Deploy local (Postgres, Grafana, Agent)
 ├── Dockerfile 
 └── requirements.txt 
+├── images/ # Imagens do grafana local e cloud
 ├── agent/ 
 │ ├── main.py # Código principal do agente de coleta 
 ├── db/ 
