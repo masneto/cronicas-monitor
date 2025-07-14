@@ -143,11 +143,10 @@ flowchart TD
 ## Repositórios
 
 ### Crônicas
-O Crônicas App é uma aplicação web que centraliza conteúdos do projeto "Crônicas do Nada Ver". A aplicação exibe informações, links para redes sociais e outros conteúdos relacionados. O projeto utiliza uma arquitetura moderna com integração contínua (CI) e entrega contínua (CD) para garantir qualidade e automação no desenvolvimento e deploy. [Cronicas APP](https://github.com/masneto/cronicas-app)
-Repositório de GitHub Actions customizadas para automação dos workflows do projeto Crônicas App. [Cronicas APP - Actions](https://github.com/masneto/cronicas-actions)
-
-Desafio técnico SRE. [Desafio](https://github.com/masneto/sre-challenge-elo)
-Projeto Bootcamp The Cloud Bootcamp. [Projeto](https://github.com/masneto/cloudmart)
+O Crônicas App é uma aplicação web que centraliza conteúdos do projeto "Crônicas do Nada Ver". A aplicação exibe informações, links para redes sociais e outros conteúdos relacionados. O projeto utiliza uma arquitetura moderna com integração contínua (CI) e entrega contínua (CD) para garantir qualidade e automação no desenvolvimento e deploy. [Cronicas APP](https://github.com/masneto/cronicas-app)<br>
+Repositório de GitHub Actions customizadas para automação dos workflows do projeto Crônicas App. [Cronicas APP - Actions](https://github.com/masneto/cronicas-actions)<br>
+Desafio técnico SRE. [Desafio](https://github.com/masneto/sre-challenge-elo) <br>
+Projeto Bootcamp The Cloud Bootcamp. [Projeto](https://github.com/masneto/cloudmart) <br>
 
 ## Licença
 MIT
