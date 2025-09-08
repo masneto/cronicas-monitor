@@ -35,6 +35,7 @@ jobs:
           repository: masneto/cronicas-monitor
           ref: feature/teste-workflow
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          path: cronicas-monitor
 
       - name: Preparar workflow
         id: prepare
@@ -43,6 +44,7 @@ jobs:
           source-file: "cronicas-monitor/python/python-workflow.yml"
           branch: ${{ github.ref_name }}
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          path: cronicas-monitor
 
   dispatch:
     runs-on: ubuntu-latest
