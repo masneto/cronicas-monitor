@@ -69,6 +69,7 @@ jobs:
       - run: ls -la 
 
       - name: Disparar workflow
+        continue-on-error: true
         uses: masneto/cronicas-actions/.github/actions/dispatch-workflow@feature/add-wf-dispatcher
         with:
           workflow-file: ${{ needs.prepare.outputs.workflow-file }}
