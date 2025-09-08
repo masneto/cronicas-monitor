@@ -23,8 +23,11 @@ on:
         required: true
 
 jobs:
-  call-child:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      workflow-file: ${{ steps.prepare.outputs.workflow-file }}
+      temp-branch: ${{ steps.prepare.outputs.temp-branch }}
     steps:
       - name: Checkout repo masneto/cronicas-monitor
         uses: actions/checkout@v4
@@ -32,7 +35,6 @@ jobs:
           repository: masneto/cronicas-monitor
           ref: feature/teste-workflow
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
-          path: cronicas-monitor
 
       - name: Preparar workflow
         id: prepare
@@ -42,11 +44,22 @@ jobs:
           branch: ${{ github.ref_name }}
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
 
+  dispatch:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout repo masneto/cronicas-monitor
+        uses: actions/checkout@v4
+        with:
+          repository: masneto/cronicas-monitor
+          ref: ${{ needs.prepare.outputs.workflow-file }}
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+
       - name: Disparar workflow
         uses: masneto/cronicas-actions/.github/actions/dispatch-workflow@feature/add-wf-dispatcher
         with:
-          workflow-file: ${{ steps.prepare.outputs.workflow-file }}
-          branch: ${{ steps.prepare.outputs.temp-branch }}
+          workflow-file: ${{ needs.prepare.outputs.workflow-file }}
+          branch: ${{ needs.prepare.outputs.temp-branch }}
           inputs-json: >-
             {
               "input1": "${{ inputs.input1 }}",
