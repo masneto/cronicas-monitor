@@ -35,4 +35,4 @@ jobs:
               "input2": "${{ inputs.input2 }}",
               "input3": ${{ inputs.input3 }}
             }
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
