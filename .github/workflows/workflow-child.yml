@@ -65,8 +65,7 @@ jobs:
           ref: ${{ needs.prepare.outputs.temp-branch }}
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
 
-      - run: ls -la cronicas-monitor/.github/workflows
-      - run: ls -la cronicas-monitor/
+      - run: ls -la .github/workflows
       - run: ls -la 
 
       - name: Disparar workflow
@@ -82,8 +81,7 @@ jobs:
             }
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
 
-      - run: ls -la cronicas-monitor/.github/workflows
-      - run: ls -la cronicas-monitor/
+      - run: ls -la .github/workflows
       - run: ls -la 
 
       # - name: Trigger no Child Repo
