@@ -1,4 +1,4 @@
-name: "Workflow de Teste"
+name: 'python-workflow.yml' #"Python Workflow"
 
 on:
   workflow_dispatch:
