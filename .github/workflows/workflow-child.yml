@@ -18,6 +18,9 @@ on:
         required: true
         default: '{"var1":"teste1","var2":"teste2"}'
         type: string
+    secrets:
+      PAT_GITHUB_TOKEN:
+        required: true
 
 jobs:
   call-child:
