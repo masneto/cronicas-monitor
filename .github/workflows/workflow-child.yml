@@ -7,14 +7,17 @@ on:
         description: "Primeiro valor"
         required: true
         default: "abc"
+        type: string
       input2:
         description: "Segundo valor"
         required: true
         default: "123"
+        type: string
       input3:
         description: "Variáveis extras em JSON"
         required: true
         default: '{"var1":"teste1","var2":"teste2"}'
+        type: string
 
 jobs:
   call-child:
