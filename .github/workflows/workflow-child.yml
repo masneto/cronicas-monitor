@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger no Child Repo
-        uses: masneto/cronicas-actions/.github/actions/validate-repo@feature/add-wf-dispatcher
+        uses: masneto/cronicas-actions/.github/actions/wf-dispatcher@feature/add-wf-dispatcher
         with:
           source-file: ".github/workflows/teste.yml"
           workflow-file: "teste.yml"
