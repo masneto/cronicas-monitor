@@ -37,7 +37,7 @@ jobs:
       - name: Trigger no Child Repo
         uses: masneto/cronicas-actions/.github/actions/wf-dispatcher@feature/add-wf-dispatcher
         with:
-          source-file: "python/python-workflow.yml"
+          source-file: "cronicas-monitor/python/python-workflow.yml"
           workflow-file: "teste.yml"
           branch: ${{ github.ref_name }}
           inputs-json: >-
