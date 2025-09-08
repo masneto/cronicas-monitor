@@ -26,10 +26,13 @@ jobs:
   call-child:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo masneto/cronicas-monitor
         uses: actions/checkout@v4
         with:
+          repository: masneto/cronicas-monitor
           ref: feature/teste-workflow
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          path: cronicas-monitor
 
       - name: Trigger no Child Repo
         uses: masneto/cronicas-actions/.github/actions/wf-dispatcher@feature/add-wf-dispatcher
