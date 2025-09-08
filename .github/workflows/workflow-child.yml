@@ -1,0 +1,35 @@
+name: "Disparar workflow no Child"
+
+on:
+  workflow_call:
+    inputs:
+      input1:
+        description: "Primeiro valor"
+        required: true
+        default: "abc"
+      input2:
+        description: "Segundo valor"
+        required: true
+        default: "123"
+      input3:
+        description: "Variáveis extras em JSON"
+        required: true
+        default: '{"var1":"teste1","var2":"teste2"}'
+
+jobs:
+  call-child:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger no Child Repo
+        uses: masneto/cronicas-actions/.github/actions/validate-repo@feature/add-wf-dispatcher
+        with:
+          source-file: ".github/workflows/teste.yml"
+          workflow-file: "teste.yml"
+          branch: ${{ github.ref_name }}
+          inputs-json: >-
+            {
+              "input1": "${{ inputs.input1 }}",
+              "input2": "${{ inputs.input2 }}",
+              "input3": ${{ inputs.input3 }}
+            }
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
