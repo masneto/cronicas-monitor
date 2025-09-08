@@ -34,12 +34,19 @@ jobs:
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
           path: cronicas-monitor
 
-      - name: Trigger no Child Repo
-        uses: masneto/cronicas-actions/.github/actions/prepare-and-dispatch-workflow@feature/add-wf-dispatcher
+      - name: Preparar workflow
+        id: prepare
+        uses: masneto/cronicas-actions/.github/actions/prepare-workflow@feature/add-wf-dispatcher
         with:
           source-file: "cronicas-monitor/python/python-workflow.yml"
-          workflow-file: "teste.yml"
           branch: ${{ github.ref_name }}
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+
+      - name: Disparar workflow
+        uses: masneto/cronicas-actions/.github/actions/dispatch-workflow@feature/add-wf-dispatcher
+        with:
+          workflow-file: ${{ steps.prepare.outputs.workflow-file }}
+          branch: ${{ steps.prepare.outputs.temp-branch }}
           inputs-json: >-
             {
               "input1": "${{ inputs.input1 }}",
@@ -47,3 +54,18 @@ jobs:
               "input3": ${{ inputs.input3 }}
             }
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
+
+
+      # - name: Trigger no Child Repo
+      #   uses: masneto/cronicas-actions/.github/actions/prepare-and-dispatch-workflow@feature/add-wf-dispatcher
+      #   with:
+      #     source-file: "cronicas-monitor/python/python-workflow.yml"
+      #     workflow-file: "teste.yml"
+      #     branch: ${{ github.ref_name }}
+      #     inputs-json: >-
+      #       {
+      #         "input1": "${{ inputs.input1 }}",
+      #         "input2": "${{ inputs.input2 }}",
+      #         "input3": ${{ inputs.input3 }}
+      #       }
+      #     token: ${{ secrets.PAT_GITHUB_TOKEN }}
