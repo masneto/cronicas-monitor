@@ -26,6 +26,11 @@ jobs:
   call-child:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: feature/teste-workflow
+
       - name: Trigger no Child Repo
         uses: masneto/cronicas-actions/.github/actions/wf-dispatcher@feature/add-wf-dispatcher
         with:
