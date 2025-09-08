@@ -35,7 +35,7 @@ jobs:
           path: cronicas-monitor
 
       - name: Trigger no Child Repo
-        uses: masneto/cronicas-actions/.github/actions/wf-dispatcher@feature/add-wf-dispatcher
+        uses: masneto/cronicas-actions/.github/actions/prepare-and-dispatch-workflow@feature/add-wf-dispatcher
         with:
           source-file: "cronicas-monitor/python/python-workflow.yml"
           workflow-file: "teste.yml"
