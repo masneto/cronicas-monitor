@@ -50,7 +50,7 @@ jobs:
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
           path: cronicas-monitor
 
-      - run: ls -la cronicas-monitor/.github/workflows
+      - run: ls -la .github/workflows
       - run: ls -la cronicas-monitor/
       - run: ls -la 
 
