@@ -68,19 +68,30 @@ jobs:
       - run: ls -la .github/workflows
       - run: ls -la 
 
-      - name: Disparar workflow
-        continue-on-error: true
-        uses: masneto/cronicas-actions/.github/actions/dispatch-workflow@feature/add-wf-dispatcher
-        with:
-          workflow-file: ${{ needs.prepare.outputs.workflow-file }}
-          branch: ${{ needs.prepare.outputs.temp-branch }}
-          inputs-json: >-
-            {
-              "input1": "${{ inputs.input1 }}",
-              "input2": "${{ inputs.input2 }}",
-              "input3": ${{ inputs.input3 }}
-            }
-          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+      - name: Disparar workflow via CLI
+        run: |
+          gh workflow run "${{ needs.prepare.outputs.workflow-file }}" \
+            -r masneto/cronicas-monitor \
+            -b "${{ needs.prepare.outputs.temp-branch }}" \
+            -f input1="${{ inputs.input1 }}" \
+            -f input2="${{ inputs.input2 }}" \
+            -f input3='${{ inputs.input3 }}'
+        env:
+          GH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
+
+      # - name: Disparar workflow via action
+      #   continue-on-error: true
+      #   uses: masneto/cronicas-actions/.github/actions/dispatch-workflow@feature/add-wf-dispatcher
+      #   with:
+      #     workflow-file: ${{ needs.prepare.outputs.workflow-file }}
+      #     branch: ${{ needs.prepare.outputs.temp-branch }}
+      #     inputs-json: >-
+      #       {
+      #         "input1": "${{ inputs.input1 }}",
+      #         "input2": "${{ inputs.input2 }}",
+      #         "input3": ${{ inputs.input3 }}
+      #       }
+      #     token: ${{ secrets.PAT_GITHUB_TOKEN }}
 
       - run: ls -la .github/workflows
       - run: ls -la 
