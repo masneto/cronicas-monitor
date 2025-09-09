@@ -71,11 +71,10 @@ jobs:
       - name: Disparar workflow via CLI
         run: |
           gh workflow run "${{ needs.prepare.outputs.workflow-file }}" \
-            -r masneto/cronicas-monitor \
-            -b "${{ needs.prepare.outputs.temp-branch }}" \
-            -f input1="${{ inputs.input1 }}" \
-            -f input2="${{ inputs.input2 }}" \
-            -f input3='${{ inputs.input3 }}'
+            --ref "${{ needs.prepare.outputs.temp-branch }}" \
+            -F input1="${{ inputs.input1 }}" \
+            -F input2="${{ inputs.input2 }}" \
+            -F input3='${{ inputs.input3 }}'
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
 
