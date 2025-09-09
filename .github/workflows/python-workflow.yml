@@ -1,0 +1,36 @@
+name: 'python-workflow.yml' #"Python Workflow"
+
+on:
+  workflow_dispatch:
+    inputs:
+      input1:
+        description: "Primeiro parâmetro"
+        required: true
+        default: "default1"
+      input2:
+        description: "Segundo parâmetro"
+        required: true
+        default: "default2"
+      input3:
+        description: "JSON de variáveis"
+        required: true
+        default: '{"key":"value"}'
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar inputs brutos
+        run: |
+          echo "Input1: ${{ github.event.inputs.input1 }}"
+          echo "Input2: ${{ github.event.inputs.input2 }}"
+          echo "Input3 (JSON bruto): ${{ github.event.inputs.input3 }}"
+
+      - name: Parse do JSON (jq)
+        run: |
+          echo '${{ github.event.inputs.input3 }}' > input.json
+          cat input.json | jq .
+          VAR1=$(cat input.json | jq -r '.var1 // empty')
+          VAR2=$(cat input.json | jq -r '.var2 // empty')
+          echo "Var1 extraída: $VAR1"
+          echo "Var2 extraída: $VAR2"
