@@ -68,6 +68,22 @@ jobs:
       - run: ls -la .github/workflows
       - run: ls -la 
 
+      - name: Verificar workflow copiado
+        run: |
+          ls -la .github/workflows
+          test -f ".github/workflows/${{ needs.prepare.outputs.workflow-file }}"
+
+      - name: Aguardar indexação do workflow
+        run: |
+          echo "Aguardando indexação do workflow..."
+          sleep 30
+
+      - name: Listar workflows disponíveis
+        run: |
+          gh workflow list
+        env:
+          GH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
+
       - name: Disparar workflow via CLI
         continue-on-error: true
         run: |
