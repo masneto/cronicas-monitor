@@ -69,6 +69,7 @@ jobs:
       - run: ls -la 
 
       - name: Disparar workflow via CLI
+        continue-on-error: true
         run: |
           gh workflow run "${{ needs.prepare.outputs.workflow-file }}" \
             --ref "${{ needs.prepare.outputs.temp-branch }}" \
