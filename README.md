@@ -77,7 +77,7 @@ POSTGRES_PASSWORD=
 
    Edite o arquivo `.env` e defina:
     - `POSTGRES_PASSWORD` (senha do banco para o container)
-    - `DB_PASS` (senha do banco para o agent)
+    - `DB_PASSWORD` (senha do banco para o agent)
 
 2. **Suba os serviços com Docker Compose**
 
@@ -99,7 +99,7 @@ POSTGRES_PASSWORD=
 - O script SQL `init.sql` cria as tabelas necessárias automaticamente.
 
 ## Deploy em Nuvem
-- Para rodar em nuvem (ex: Supabase), use o arquivo `docker-compose.cloud.yml` e configure as variáveis de ambiente dentro do Github para apontar para o banco remoto.
+- Para rodar em nuvem (ex: Supabase), configure as variáveis de ambiente dentro do GinHub Actions para apontar para o banco remoto.
 - O workflow db-migration.yml automatiza a aplicação do script SQL no Supabase a cada alteração em init.sql.
 
 ## Automação de Migração (AWS EC2 + Supabase + Grafana Cloud)
