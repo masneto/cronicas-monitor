@@ -148,4 +148,4 @@ flowchart TD
 - Projeto Bootcamp The Cloud Bootcamp. [Projeto](https://github.com/masneto/cloudmart) <br>
 
 ## Licença
-MIT
+Projeto privado. Todos os direitos reservados. Nenhuma licença de uso, cópia ou redistribuição é concedida.
