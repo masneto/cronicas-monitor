@@ -1,0 +1,97 @@
+name: "[Cronicas] Security Audit - Monitor"
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  push:
+    paths-ignore:
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Audit & Fix Monitor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Audit Python security
+        id: security
+        uses: masneto/cronicas-actions/.github/actions/dependency-security-audit@main
+        with:
+          tech: python
+          working-directory: .
+          package-label: Cronicas Monitor (Python)
+
+      - name: Update security changelog
+        if: steps.security.outputs.had-vulnerabilities == 'true'
+        uses: masneto/cronicas-actions/.github/actions/dependency-security-audit@main
+        with:
+          changelog-only: true
+          changelog-file: SECURITY_FIXES.md
+          changelog-entries: |-
+            ${{ steps.security.outputs.changelog-entries }}
+
+      - name: Check for changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request
+        if: steps.security.outputs.had-vulnerabilities == 'true' && steps.changes.outputs.has_changes == 'true'
+        id: pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: 'fix(security): python audit fixes'
+          title: 'Security: python audit fixes (${{ github.run_id }})'
+          body: |
+            ## Automatic Security Update
+
+            This PR contains Python security fixes for cronicas-monitor.
+
+            See the workflow summary for details on vulnerabilities found.
+
+            The detailed history is also recorded in `SECURITY_FIXES.md`.
+          branch: security/python-audit-fixes
+          delete-branch: true
+          labels: |
+            security
+            dependencies
+            automated
+          reviewers: masneto
+
+      - name: Merge Pull Request
+        if: steps.pr.outputs.pull-request-number != ''
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.pull-request-number }}
+        run: |
+          set -euo pipefail
+
+          curl --fail-with-body -sS -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/merge" \
+            -d '{"commit_title":"fix(security): python audit fixes","merge_method":"squash"}'
